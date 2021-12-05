@@ -1,0 +1,64 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tifta"
+readme = "README.md"
+license = {file = "LICENSE" }
+requires-python = ">=3.8"
+authors = [
+    {name = "Jorge Martínez Garrido", email = "jorge@astrodevelopers.com" }
+]
+keywords = [
+    "ftp",
+    "sftp",
+    "fta",
+    "tcp",
+    "gui",
+    "cli",
+]
+home-page = "https://github.com/jorgepiloto/tifta"
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Customer Service",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Internet :: File Transfer Protocol (FTP)"
+]
+dependencies = ["paramiko", "PyQt6"]
+dynamic = ["version", "description"]
+
+[project.urls]
+Source = "https://github.com/jorgepiloto/tifta"
+Tracker = "https://github.com/jorgepiloto/tifta/issues"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "coverage",
+    "isort",
+    "jupytext",
+    "myst-nb",
+    "nbsphinx",
+    "notebook",
+    "pycodestyle",
+    "pytest>=3.2",
+    "pytest-cov<2.6.0",
+    "pytest-doctestplus>=0.8",
+    "sphinx",
+    "sphinx-autoapi",
+    "sphinx-rtd-theme",
+    "tox",
+]
+
+[tool.flit.sdist]
+exclude = [
+    "docs/",
+    "tests",
+]
