@@ -6,22 +6,16 @@ import paramiko
 class _SFTPClient(object):
     """A class for setting up an SFTP client."""
 
-    def __init__(self, user, host, password, passphrase, key_path, port):
+    def __init__(self, hostname, **server_data):
         """Initialize the server by saving connection data."""
-        self._server_data = dict(
-            hostname=host,
-            port=port,
-            username=user,
-            password=password,
-            key_filename=str(key_path),
-            passphrase=passphrase,
-        )
+        self._hostname = hostname
+        self._server_data = server_data
 
     def _start_ssh_client(self):
         """Start an SSH client."""
         self._ssh_client = paramiko.SSHClient()
         self._ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self._ssh_client.connect(**self._server_data)
+        self._ssh_client.connect(self._hostname, **self._server_data)
 
     def _start_sftp_client(self):
         """Start an SFTP session."""
@@ -57,7 +51,7 @@ class _SFTPClient(object):
         self._sftp_client.get(remote_filepath, local_filepath)
         self._close_sftp_and_ssh_client()
 
-    def _delete_file(self, remote_filepath):
+    def _remove_file(self, remote_filepath):
         """Removes a file in the SFTP server."""
         self._start_ssh_and_sftp_client()
         self._sftp_client.remove(remote_filepath)
@@ -67,17 +61,9 @@ class _SFTPClient(object):
 class TIFTAClient(_SFTPClient):
     """A secure class for setting up an SFTP client."""
 
-    def __init__(
-        self,
-        user,
-        host,
-        password,
-        passphrase,
-        key_path,
-        port,
-    ):
+    def __init__(self, hostname, **connect_data):
         """Initializes a client session."""
-        super().__init__(user, host, password, passphrase, key_path, port)
+        super().__init__(hostname, **connect_data)
 
     @property
     def host(self):
@@ -102,6 +88,6 @@ class TIFTAClient(_SFTPClient):
         """Donwload remote server file to local machine."""
         self._download_file(remote_filepath, local_filepath)
 
-    def delete_file(self, remote_filepath):
+    def remove_file(self, remote_filepath):
         """Removes server file."""
-        self._delete_file(remote_filepath)
+        self._remove_file(remote_filepath)

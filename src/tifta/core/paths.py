@@ -1,6 +1,5 @@
 """A module holding default TIFTA paths."""
 
-import os
 from pathlib import Path
 
 _HOME_PATH = Path.home()
@@ -37,11 +36,3 @@ _TIFTA_DIRPATHS = (
     _TIFTA_KEYS_PATH,
 )
 """A list holding all the critical TIFTA directory paths."""
-
-
-def _create_tifta_dirpaths():
-    """Creates the TIFTA hidden directory."""
-
-    for dirpath in _TIFTA_DIRPATHS:
-        if not os.path.exists(dirpath):
-            os.makedirs(dirpath)

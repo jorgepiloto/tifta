@@ -18,16 +18,16 @@ generate a pair of SSH keys by using the `ssh-keygen` utility:
 """
 
 
-from paramiko import DSSKey, RSAKey
+from paramiko import DSSKey, ECDSAKey, RSAKey
 
 from tifta.core.paths import _TIFTA_KEYS_PATH
 
-_PARAMIKO_CIPHERS = {"dsa": DSSKey, "rsa": RSAKey}
+_PARAMIKO_CIPHERS = {"dsa": DSSKey, "rsa": RSAKey, "ecdsa": ECDSAKey}
 """A dictionary relating cipher name with its paramiko class."""
 
 
-def generate_keys(
-    cipher_name,
+def _generate_keys(
+    cipher_name="rsa",
     key_filename="tifta_key",
     output_path=_TIFTA_KEYS_PATH,
     bits=2048,
