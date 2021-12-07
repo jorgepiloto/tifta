@@ -1,17 +1,23 @@
+"""Holds the TIFTA command line interface fundamental logic."""
+
 import click
 
 from tifta.core.client import TIFTAClient
-from tifta.core.config import _read_tifta_client_config_file
-from tifta.core.paths import _TIFTA_CLIENT_CONFIG_PATH
+from tifta.core.config import (
+    _append_varname_and_value_to_config_file,
+    _read_tifta_client_config_file,
+    _setup_clean_tifta_environment,
+)
+from tifta.core.paths import _TIFTA_CLIENT_CONFIG_PATH, _TIFTA_HOST_CONFIG_PATH
 
 
 @click.group()
-def main():
-    """The entry point for the TIFTA CLIENT tool"""
-    ...
+def tifta_main():
+    """TIFTA: Tiny Interactive File Transfer Application."""
+    pass
 
 
-@main.command()
+@tifta_main.command()
 @click.argument("local_filepath", type=str)
 @click.argument("remote_filepath", type=str)
 @click.option("--client_conf", default=_TIFTA_CLIENT_CONFIG_PATH, type=str)
@@ -28,7 +34,7 @@ def upload(local_filepath, remote_filepath, client_conf, password):
     client.upload_file(local_filepath, remote_filepath)
 
 
-@main.command()
+@tifta_main.command()
 @click.argument("remote_filepath", type=str)
 @click.argument("local_filepath", type=str)
 @click.option("--client_conf", default=_TIFTA_CLIENT_CONFIG_PATH, type=str)
@@ -45,7 +51,7 @@ def download(remote_filepath, local_filepath, client_conf, password):
     client.download_file(remote_filepath, local_filepath)
 
 
-@main.command()
+@tifta_main.command()
 @click.argument("remote_filepath", type=str)
 @click.option("--client_conf", default=_TIFTA_CLIENT_CONFIG_PATH, type=str)
 @click.password_option()
@@ -59,3 +65,33 @@ def remove(remote_filepath, client_conf, password):
     # Establish connection and remove the file
     client = TIFTAClient(hostname, **server_data)
     client.remove_file(remote_filepath)
+
+
+@tifta_main.group()
+def config():
+    """Easily manipulate TIFTA configuration files."""
+    pass
+
+
+@config.command()
+def clean():
+    """A command for cleaning and generating a fresh TIFTA environment."""
+    _setup_clean_tifta_environment()
+
+
+@config.command()
+@click.argument("varname", type=str)
+@click.argument("value", type=str)
+@click.option("--host_conf", default=_TIFTA_HOST_CONFIG_PATH, type=str)
+def host(varname, value, host_conf):
+    """Allows to configure TIFTA HOST file by adding new arguments and values."""
+    _append_varname_and_value_to_config_file(varname, value, host_conf)
+
+
+@config.command()
+@click.argument("varname", type=str)
+@click.argument("value", type=str)
+@click.option("--client_conf", default=_TIFTA_CLIENT_CONFIG_PATH, type=str)
+def client(varname, value, client_conf):
+    """Allows to configure TIFTA CLIENT file by adding new arguments and values."""
+    _append_varname_and_value_to_config_file(varname, value, client_conf)
