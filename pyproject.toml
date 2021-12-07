@@ -31,12 +31,16 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Internet :: File Transfer Protocol (FTP)"
 ]
-dependencies = ["paramiko", "PyQt6"]
+dependencies = ["click", "paramiko", "PyQt6"]
 dynamic = ["version", "description"]
 
 [project.urls]
 Source = "https://github.com/jorgepiloto/tifta"
 Tracker = "https://github.com/jorgepiloto/tifta/issues"
+
+[project.scripts]
+tifta_client = "tifta.cli.tifta_client:main"
+tifta_config = "tifta.cli.tifta_config:main"
 
 [project.optional-dependencies]
 dev = [
