@@ -39,8 +39,7 @@ Source = "https://github.com/jorgepiloto/tifta"
 Tracker = "https://github.com/jorgepiloto/tifta/issues"
 
 [project.scripts]
-tifta_client = "tifta.cli.tifta_client:main"
-tifta_config = "tifta.cli.tifta_config:main"
+tifta = "tifta.cli.base:tifta_main"
 
 [project.optional-dependencies]
 dev = [
